@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.jpg">
+    <title>Helping You Find Yourself - Comprehensive Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: linear-gradient(to bottom right, #f5f9ff, #e6f0ff);
+            background-image: -webkit-linear-gradient(to bottom right, #f5f9ff, #e6f0ff);
+            background-image: -moz-linear-gradient(to bottom right, #f5f9ff, #e6f0ff);
+            background-image: -ms-linear-gradient(to bottom right, #f5f9ff, #e6f0ff);
+            background-image: -o-linear-gradient(to bottom right, #f5f9ff, #e6f0ff);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 150, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            background: -webkit-linear-gradient(to right, #4b6cb7, #182848);
+            background: -moz-linear-gradient(to right, #4b6cb7, #182848);
+            background: -ms-linear-gradient(to right, #4b6cb7, #182848);
+            background: -o-linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .progress-container {
+            height: 10px;
+            background-color: #e0e0e0;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4b6cb7, #6a82fb);
+            background: -webkit-linear-gradient(to right, #4b6cb7, #6a82fb);
+            background: -moz-linear-gradient(to right, #4b6cb7, #6a82fb);
+            background: -ms-linear-gradient(to right, #4b6cb7, #6a82fb);
+            background: -o-linear-gradient(to right, #4b6cb7, #6a82fb);
+            width: 0%;
+            -webkit-transition: width 0.5s ease;
+            -moz-transition: width 0.5s ease;
+            transition: width 0.5s ease;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .step {
+            display: none;
+            -webkit-animation: fadeIn 0.8s ease;
+            -moz-animation: fadeIn 0.8s ease;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .step.active {
+            display: block;
+        }
+
+        @-webkit-keyframes fadeIn {
+            from { opacity: 0; -webkit-transform: translateY(20px); }
+            to { opacity: 1; -webkit-transform: translateY(0); }
+        }
+        @-moz-keyframes fadeIn {
+            from { opacity: 0; -moz-transform: translateY(20px); }
+            to { opacity: 1; -moz-transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #182848;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #e6f0ff;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: #4b6cb7;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .option {
+            padding: 18px;
+            background-color: #f8faff;
+            border: 2px solid #dbe5ff;
+            border-radius: 12px;
+            cursor: pointer;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        
+        .option:hover {
+            background-color: #e6eeff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 150, 0.1);
+        }
+        
+        .option.selected {
+            background-color: #4b6cb7;
+            color: white;
+            border-color: #4b6cb7;
+        }
+        
+        .option.selected:after {
+            content: '✓';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        #prevBtn {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        #prevBtn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        #nextBtn {
+            background-color: #182848;
+            color: white;
+        }
+        
+        #nextBtn:hover {
+            background-color: #0f1c36;
+            -webkit-transform: translateY(-2px);
+            -moz-transform: translateY(-2px);
+            -ms-transform: translateY(-2px);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 28, 54, 0.3);
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .result-header {
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            background: -webkit-linear-gradient(to right, #4b6cb7, #182848);
+            background: -moz-linear-gradient(to right, #4b6cb7, #182848);
+            background: -ms-linear-gradient(to right, #4b6cb7, #182848);
+            background: -o-linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .career-result {
+            background-color: #f8faff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 150, 0.05);
+            text-align: left;
+        }
+        
+        .career-title {
+            color: #182848;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .career-description {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        
+        .career-details {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .detail-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .detail-icon {
+            color: #4b6cb7;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(to right, #4b6cb7, #6a82fb);
+            color: white;
+            margin-top: 20px;
+            padding: 15px 40px;
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(to right, #3a5aa5, #5a72eb);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.3);
+        }
+        
+        .step-counter {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .sa-context {
+            background-color: #f0f8ff;
+            border-left: 4px solid #4b6cb7;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .personality-insights {
+            background-color: #fff8f0;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .insight-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .insight-title {
+            color: #182848;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .mbti-result {
+            background-color: #182848;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0, 0, 150, 0.1);
+            }
+            
+            header {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .step-counter {
+                position: static;
+                background-color: transparent;
+                display: inline-block;
+                margin-bottom: 15px;
+                padding: 5px 0;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 25px;
+            }
+            
+            .option {
+                padding: 14px;
+                font-size: 1rem;
+                border-radius: 8px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            button {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .sa-context {
+                padding: 12px;
+                margin: 15px 0;
+                gap: 8px;
+            }
+            
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .career-result {
+                padding: 20px;
+                margin: 20px 0;
+            }
+            
+            .career-title {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+            
+            .career-description {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+            
+            .personality-insights {
+                padding: 15px;
+                margin: 20px 0;
+            }
+            
+            .detail-item {
+                margin-bottom: 12px;
+            }
+            
+            .result-title {
+                font-size: 1.5rem;
+            }
+            
+            .result-header {
+                padding: 20px;
+            }
+            
+            .mbti-result {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+                background-color: #f5f9ff;
+            }
+            
+            .container {
+                border-radius: 12px;
+            }
+            
+            header {
+                padding: 20px 12px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+            
+            .progress-container {
+                margin-top: 15px;
+                height: 8px;
+            }
+            
+            .content {
+                padding: 15px 12px;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+            }
+            
+            h2 i {
+                margin-right: 8px;
+            }
+            
+            .question {
+                font-size: 1rem;
+                margin-bottom: 15px;
+                line-height: 1.4;
+            }
+            
+            .options {
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .option {
+                padding: 12px;
+                font-size: 0.95rem;
+                line-height: 1.4;
+            }
+            
+            .buttons {
+                gap: 8px;
+                margin-top: 15px;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 0.95rem;
+                border-radius: 8px;
+            }
+            
+            .sa-context {
+                padding: 10px;
+                font-size: 0.9rem;
+                margin: 12px 0;
+            }
+            
+            .sa-context i {
+                min-width: 16px;
+            }
+            
+            .insight-grid {
+                gap: 12px;
+            }
+            
+            .insight-item {
+                padding: 12px;
+            }
+            
+            .insight-title {
+                font-size: 0.95rem;
+                margin-bottom: 6px;
+            }
+            
+            .career-result {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 10px;
+            }
+            
+            .career-title {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+            }
+            
+            .career-description {
+                font-size: 0.95rem;
+                margin-bottom: 12px;
+                line-height: 1.5;
+            }
+            
+            .result-header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .result-title {
+                font-size: 1.3rem;
+                margin-bottom: 8px;
+            }
+            
+            .personality-insights {
+                padding: 12px;
+                margin: 15px 0;
+            }
+            
+            .detail-item {
+                margin-bottom: 10px;
+                font-size: 0.95rem;
+            }
+            
+            .detail-icon {
+                margin-right: 8px;
+                margin-top: 3px;
+            }
+            
+            .step-counter {
+                font-size: 0.85rem;
+                margin-bottom: 10px;
+            }
+            
+            .mbti-result {
+                font-size: 1rem;
+                padding: 12px;
+                margin: 15px 0;
+            }
+            
+            .reset-btn {
+                width: 100%;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="step-counter">Question <span id="current-step">1</span> of 20</div>
+            <h1>Helping You Find Yourself</h1>
+            <p class="subtitle">A comprehensive career discovery assessment based on psychology, personality traits, and South African context</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- Step 1: Subjects -->
+            <div class="step active" id="step1">
+                <h2><i class="fas fa-graduation-cap"></i> Academic Foundation</h2>
+                <div class="question">Looking back at your high school years in South Africa, which subject did you genuinely enjoy and look forward to?</div>
+                <div class="sa-context">
+                    <i class="fas fa-info-circle"></i> Consider the South African CAPS curriculum subjects you took
+                </div>
+                <div class="options">
+                    <div class="option" data-value="maths">Mathematics or Physical Sciences - I loved solving complex problems</div>
+                    <div class="option" data-value="languages">Languages (English, Afrikaans, indigenous languages) - I enjoyed reading, writing and communication</div>
+                    <div class="option" data-value="humanities">Humanities (History, Geography, Life Orientation) - Understanding people and societies fascinated me</div>
+                    <div class="option" data-value="business">Business Studies, Economics, Accounting - The world of commerce intrigued me</div>
+                    <div class="option" data-value="arts">Creative Arts, Dramatic Arts, Music - Expressing creativity was fulfilling</div>
+                    <div class="option" data-value="tech">Computer Applications Technology, IT - Technology and digital systems excited me</div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Activities -->
+            <div class="step" id="step2">
+                <h2><i class="fas fa-heart"></i> Intrinsic Motivation</h2>
+                <div class="question">When you have free time and no obligations, what type of activities do you naturally gravitate toward?</div>
+                <div class="options">
+                    <div class="option" data-value="creative">Creative expression - drawing, writing, making music, crafting</div>
+                    <div class="option" data-value="analytical">Problem-solving - puzzles, strategy games, researching topics deeply</div>
+                    <div class="option" data-value="social">Social connection - meeting friends, community activities, helping others</div>
+                    <div class="option" data-value="practical">Hands-on work - building, fixing, gardening, DIY projects</div>
+                    <div class="option" data-value="organized">Organizing and planning - arranging things, creating systems, event planning</div>
+                    <div class="option" data-value="outdoor">Outdoor activities - sports, hiking, exploring nature, adventure</div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Work Environment -->
+            <div class="step" id="step3">
+                <h2><i class="fas fa-building"></i> Ideal Work Environment</h2>
+                <div class="question">Imagine your ideal work setting. Which of these environments feels most natural and energizing to you?</div>
+                <div class="options">
+                    <div class="option" data-value="structured">Structured and predictable - Clear routines, defined responsibilities, consistent schedules</div>
+                    <div class="option" data-value="dynamic">Dynamic and changing - New challenges regularly, varied tasks, adapting to different situations</div>
+                    <div class="option" data-value="team">Collaborative team setting - Working closely with others, regular meetings, shared goals</div>
+                    <div class="option" data-value="independent">Independent and autonomous - Working alone, setting my own pace, minimal supervision</div>
+                    <div class="option" data-value="leadership">Leadership position - Guiding others, making decisions, taking responsibility</div>
+                    <div class="option" data-value="flexible">Flexible and remote - Freedom to work from different locations, setting my own hours</div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Skills -->
+            <div class="step" id="step4">
+                <h2><i class="fas fa-star"></i> Natural Talents</h2>
+                <div class="question">Which of these abilities comes most naturally to you, without much effort or formal training?</div>
+                <div class="options">
+                    <div class="option" data-value="communication">Communication and persuasion - Explaining ideas clearly, convincing others, public speaking</div>
+                    <div class="option" data-value="analytical">Analytical thinking and logic - Seeing patterns, breaking down complex problems, critical thinking</div>
+                    <div class="option" data-value="creative">Creativity and imagination - Generating original ideas, thinking outside the box, artistic vision</div>
+                    <div class="option" data-value="empathy">Empathy and understanding others - Sensing emotions, mediating conflicts, supporting people</div>
+                    <div class="option" data-value="practical">Practical, hands-on skills - Working with tools, fixing things, physical coordination</div>
+                    <div class="option" data-value="organizational">Organizational and planning skills - Coordinating details, time management, creating systems</div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Values -->
+            <div class="step" id="step5">
+                <h2><i class="fas fa-balance-scale"></i> Core Values</h2>
+                <div class="question">When considering a lifelong career, which of these values is most important for you to fulfill?</div>
+                <div class="options">
+                    <div class="option" data-value="security">Security and stability - Reliable income, job security, predictable career path</div>
+                    <div class="option" data-value="income">High earning potential - Financial success, comfortable lifestyle, wealth accumulation</div>
+                    <div class="option" data-value="impact">Making a difference - Contributing to society, helping others, positive social impact</div>
+                    <div class="option" data-value="balance">Work-life balance - Time for family, hobbies, personal life outside work</div>
+                    <div class="option" data-value="growth">Continuous learning and growth - Intellectual stimulation, skill development, career advancement</div>
+                    <div class="option" data-value="recognition">Recognition and status - Being respected, visible achievements, professional prestige</div>
+                </div>
+            </div>
+            
+            <!-- Step 6: Challenges -->
+            <div class="step" id="step6">
+                <h2><i class="fas fa-puzzle-piece"></i> Problem-Solving Style</h2>
+                <div class="question">When faced with a difficult challenge, what is your natural approach to solving it?</div>
+                <div class="options">
+                    <div class="option" data-value="research">Research and analysis - Gather information, study the problem, analyze data</div>
+                    <div class="option" data-value="creative">Creative brainstorming - Generate multiple ideas, think outside the box, innovate</div>
+                    <div class="option" data-value="collaborate">Collaboration - Consult with others, seek diverse perspectives, teamwork</div>
+                    <div class="option" data-value="practical">Practical experimentation - Try different approaches, learn by doing, hands-on testing</div>
+                    <div class="option" data-value="plan">Structured planning - Develop step-by-step plans, organize resources, systematic approach</div>
+                    <div class="option" data-value="adapt">Adaptive flexibility - Adjust as I go, respond to feedback, intuitive decision-making</div>
+                </div>
+            </div>
+            
+            <!-- Step 7: SA Context -->
+            <div class="step" id="step7">
+                <h2><i class="fas fa-flag"></i> South African Context</h2>
+                <div class="question">Considering South Africa's unique challenges and opportunities, what role would you feel most passionate about playing in the country's development?</div>
+                <div class="sa-context">
+                    <i class="fas fa-info-circle"></i> Think about where you can make the most meaningful contribution
+                </div>
+                <div class="options">
+                    <div class="option" data-value="education">Improving education and skills development - Building human capital for the future</div>
+                    <div class="option" data-value="health">Advancing healthcare and wellbeing - Addressing health disparities and promoting wellness</div>
+                    <div class="option" data-value="business">Growing businesses and creating jobs - Contributing to economic development and entrepreneurship</div>
+                    <div class="option" data-value="tech">Driving technological innovation - Bridging the digital divide and creating tech solutions</div>
+                    <div class="option" data-value="community">Strengthening communities and social cohesion - Building inclusive, supportive communities</div>
+                    <div class="option" data-value="environment">Protecting the environment and resources - Sustainability, conservation, and climate action</div>
+                </div>
+            </div>
+            
+            <!-- Step 8: Personality -->
+            <div class="step" id="step8">
+                <h2><i class="fas fa-user"></i> Social Energy</h2>
+                <div class="question">How do you typically recharge your energy in relation to other people?</div>
+                <div class="options">
+                    <div class="option" data-value="introvert">I recharge by spending time alone - I'm thoughtful, reflective, and enjoy depth in relationships</div>
+                    <div class="option" data-value="extrovert">I recharge by being with people - I'm energetic, outgoing, and enjoy social interactions</div>
+                    <div class="option" data-value="ambivert">It depends on the situation - I adapt to different social contexts and enjoy both solitude and company</div>
+                    <div class="option" data-value="structured">I prefer structured social interactions - Clear roles, organized activities, predictable social settings</div>
+                    <div class="option" data-value="flexible">I enjoy spontaneous social connections - Unplanned meetings, casual conversations, flexible arrangements</div>
+                    <div class="option" data-value="selective">I'm selective about social connections - A few deep relationships rather than many acquaintances</div>
+                </div>
+            </div>
+            
+            <!-- Step 9: Decision Making -->
+            <div class="step" id="step9">
+                <h2><i class="fas fa-clipboard-check"></i> Decision-Making Style</h2>
+                <div class="question">When making important decisions, what approach feels most natural to you?</div>
+                <div class="options">
+                    <div class="option" data-value="logical">Logical analysis - Weighing pros and cons, considering facts and data</div>
+                    <div class="option" data-value="intuitive">Intuitive feeling - Going with my gut instinct, considering how choices feel</div>
+                    <div class="option" data-value="consultative">Consulting others - Seeking advice and perspectives from trusted people</div>
+                    <div class="option" data-value="practical">Practical considerations - Focusing on what's feasible, realistic, and actionable</div>
+                    <div class="option" data-value="values">Values alignment - Ensuring decisions match my principles and ethics</div>
+                    <div class="option" data-value="flexible">Keeping options open - Making flexible decisions that allow for future changes</div>
+                </div>
+            </div>
+            
+            <!-- Step 10: Stress Response -->
+            <div class="step" id="step10">
+                <h2><i class="fas fa-wind"></i> Stress Response</h2>
+                <div class="question">How do you typically respond to high-pressure or stressful situations?</div>
+                <div class="options">
+                    <div class="option" data-value="organized">I become more organized - Creating lists, schedules, and systems to manage stress</div>
+                    <div class="option" data-value="retreat">I need space to retreat - Withdrawing temporarily to process and regain perspective</div>
+                    <div class="option" data-value="action">I take immediate action - Addressing problems directly to reduce the stress source</div>
+                    <div class="option" data-value="support">I seek support - Talking to others, seeking advice, collaborative problem-solving</div>
+                    <div class="option" data-value="creative">I use creative outlets - Channeling stress into art, writing, music, or other expression</div>
+                    <div class="option" data-value="analysis">I analyze the situation - Breaking down the problem logically to find solutions</div>
+                </div>
+            </div>
+            
+            <!-- Step 11: Learning Style -->
+            <div class="step" id="step11">
+                <h2><i class="fas fa-brain"></i> Learning Preference</h2>
+                <div class="question">What is your preferred way of learning new things or acquiring new skills?</div>
+                <div class="options">
+                    <div class="option" data-value="visual">Visual learning - Watching demonstrations, diagrams, videos, or reading</div>
+                    <div class="option" data-value="hands-on">Hands-on practice - Learning by doing, trial and error, physical experience</div>
+                    <div class="option" data-value="auditory">Auditory learning - Listening to explanations, discussions, or audio materials</div>
+                    <div class="option" data-value="structured">Structured instruction - Formal classes, step-by-step tutorials, clear guidelines</div>
+                    <div class="option" data-value="collaborative">Collaborative learning - Group projects, discussions, learning with others</div>
+                    <div class="option" data-value="self-directed">Self-directed exploration - Independent research, experimenting, following curiosity</div>
+                </div>
+            </div>
+            
+            <!-- Step 12: Time Perspective -->
+            <div class="step" id="step12">
+                <h2><i class="fas fa-clock"></i> Time Perspective</h2>
+                <div class="question">Which time perspective feels most natural to you when planning your life?</div>
+                <div class="options">
+                    <div class="option" data-value="present">Present-focused - Living in the moment, adapting to current circumstances</div>
+                    <div class="option" data-value="future">Future-oriented - Setting long-term goals, planning ahead, delayed gratification</div>
+                    <div class="option" data-value="past">Past-informed - Learning from experience, respecting traditions, continuity</div>
+                    <div class="option" data-value="balanced">Balanced perspective - Integrating past, present, and future considerations</div>
+                    <div class="option" data-value="opportunistic">Opportunistic - Seizing current opportunities that align with general direction</div>
+                    <div class="option" data-value="practical">Practical planning - Short to medium-term planning with flexibility</div>
+                </div>
+            </div>
+            
+            <!-- Step 13: Achievement Motivation -->
+            <div class="step" id="step13">
+                <h2><i class="fas fa-trophy"></i> Achievement Motivation</h2>
+                <div class="question">What drives you to achieve and succeed in your endeavors?</div>
+                <div class="options">
+                    <div class="option" data-value="mastery">Mastery and competence - Becoming excellent at what I do, developing expertise</div>
+                    <div class="option" data-value="impact">Impact and contribution - Making a difference, leaving a positive legacy</div>
+                    <div class="option" data-value="recognition">Recognition and status - Gaining respect, visibility, and acknowledgment</div>
+                    <div class="option" data-value="autonomy">Autonomy and freedom - Having control over my work and life direction</div>
+                    <div class="option" data-value="security">Security and stability - Providing for myself and my family reliably</div>
+                    <div class="option" data-value="relationships">Relationships and connection - Building meaningful connections through my work</div>
+                </div>
+            </div>
+            
+            <!-- Step 14: Risk Tolerance -->
+            <div class="step" id="step14">
+                <h2><i class="fas fa-chart-line"></i> Risk Tolerance</h2>
+                <div class="question">How comfortable are you with uncertainty and taking risks in your career choices?</div>
+                <div class="options">
+                    <div class="option" data-value="low">Low risk tolerance - I prefer predictable, stable paths with minimal uncertainty</div>
+                    <div class="option" data-value="moderate">Moderate risk tolerance - I'm willing to take calculated risks with reasonable chances</div>
+                    <div class="option" data-value="high">High risk tolerance - I'm comfortable with significant uncertainty for potential rewards</div>
+                    <div class="option" data-value="strategic">Strategic risk-taking - I take risks in specific areas where I have expertise or advantage</div>
+                    <div class="option" data-value="phased">Phased approach - I start conservatively and increase risk as I gain experience</div>
+                    <div class="option" data-value="opportunity">Risk as opportunity - I see uncertainty as creating possibilities for innovation</div>
+                </div>
+            </div>
+            
+            <!-- Step 15: Communication Style -->
+            <div class="step" id="step15">
+                <h2><i class="fas fa-comments"></i> Communication Style</h2>
+                <div class="question">How do you prefer to communicate in professional or important settings?</div>
+                <div class="options">
+                    <div class="option" data-value="direct">Direct and concise - Getting straight to the point, clear and unambiguous</div>
+                    <div class="option" data-value="diplomatic">Diplomatic and tactful - Considering feelings, building consensus, maintaining harmony</div>
+                    <div class="option" data-value="detailed">Detailed and thorough - Providing comprehensive information, context, and nuance</div>
+                    <div class="option" data-value="inspiring">Inspiring and visionary - Focusing on big picture, motivation, and future possibilities</div>
+                    <div class="option" data-value="collaborative">Collaborative and inclusive - Encouraging input, facilitating discussion, group-oriented</div>
+                    <div class="option" data-value="analytical">Analytical and logical - Focusing on facts, data, and rational arguments</div>
+                </div>
+            </div>
+            
+            <!-- Step 16: Leadership Style -->
+            <div class="step" id="step16">
+                <h2><i class="fas fa-users"></i> Leadership Approach</h2>
+                <div class="question">If you were in a leadership position, what approach would feel most authentic to you?</div>
+                <div class="options">
+                    <div class="option" data-value="servant">Servant leadership - Supporting and empowering team members to succeed</div>
+                    <div class="option" data-value="visionary">Visionary leadership - Setting inspiring direction and motivating through vision</div>
+                    <div class="option" data-value="democratic">Democratic leadership - Involving team in decisions, consensus-building</div>
+                    <div class="option" data-value="strategic">Strategic leadership - Focusing on planning, analysis, and long-term direction</div>
+                    <div class="option" data-value="coaching">Coaching leadership - Developing individuals' skills and potential</div>
+                    <div class="option" data-value="transformational">Transformational leadership - Driving change and innovation in the organization</div>
+                </div>
+            </div>
+            
+            <!-- Step 17: Work Values -->
+            <div class="step" id="step17">
+                <h2><i class="fas fa-hands-helping"></i> Work Relationships</h2>
+                <div class="question">What kind of relationships with colleagues and supervisors do you value most?</div>
+                <div class="options">
+                    <div class="option" data-value="collaborative">Collaborative partnerships - Working closely together toward shared goals</div>
+                    <div class="option" data-value="respectful">Respectful professionalism - Clear boundaries, mutual respect, professional conduct</div>
+                    <div class="option" data-value="supportive">Supportive community - Caring relationships, emotional support, like a family</div>
+                    <div class="option" data-value="mentoring">Mentoring relationships - Learning from experienced colleagues, guidance</div>
+                    <div class="option" data-value="independent">Independent autonomy - Freedom to work independently with minimal oversight</div>
+                    <div class="option" data-value="growth">Growth-oriented - Relationships that challenge and help me develop professionally</div>
+                </div>
+            </div>
+            
+            <!-- Step 18: Creativity -->
+            <div class="step" id="step18">
+                <h2><i class="fas fa-lightbulb"></i> Creative Expression</h2>
+                <div class="question">How does creativity manifest in your life and work preferences?</div>
+                <div class="options">
+                    <div class="option" data-value="artistic">Artistic creativity - Direct artistic expression through visual, musical, or performing arts</div>
+                    <div class="option" data-value="problem">Problem-solving creativity - Innovating solutions to practical or technical challenges</div>
+                    <div class="option" data-value="conceptual">Conceptual creativity - Developing new ideas, theories, or conceptual frameworks</div>
+                    <div class="option" data-value="social">Social creativity - Creating connections, building communities, facilitating relationships</div>
+                    <div class="option" data-value="practical">Practical creativity - Inventing or improving tools, systems, or processes</div>
+                    <div class="option" data-value="strategic">Strategic creativity - Developing novel approaches to achieving goals or visions</div>
+                </div>
+            </div>
+            
+            <!-- Step 19: SA Education Path -->
+            <div class="step" id="step19">
+                <h2><i class="fas fa-road"></i> Educational Pathway</h2>
+                <div class="question">Considering South African education options, what type of learning pathway appeals to you most?</div>
+                <div class="sa-context">
+                    <i class="fas fa-info-circle"></i> All pathways can lead to successful careers - this is about your personal preference
+                </div>
+                <div class="options">
+                    <div class="option" data-value="university">University degree - In-depth theoretical knowledge, academic environment</div>
+                    <div class="option" data-value="college">TVET/Technical College - Practical, hands-on skills with work placement</div>
+                    <div class="option" data-value="apprenticeship">Apprenticeship or learnership - Earning while learning on the job</div>
+                    <div class="option" data-value="online">Online/distance learning - Flexibility, self-paced study, digital environment</div>
+                    <div class="option" data-value="entrepreneurial">Entrepreneurial path - Starting a business, learning through experience</div>
+                    <div class="option" data-value="combination">Combination approach - Mixing different types of education and experiences</div>
+                </div>
+            </div>
+            
+            <!-- Step 20: Life Vision -->
+            <div class="step" id="step20">
+                <h2><i class="fas fa-eye"></i> Life Vision</h2>
+                <div class="question">Imagine yourself 10 years from now. What does a successful and fulfilling life look like for you?</div>
+                <div class="options">
+                    <div class="option" data-value="impact">Making a meaningful impact - Seeing positive change from my work in communities</div>
+                    <div class="option" data-value="expertise">Being an expert in my field - Respected for deep knowledge and skills</div>
+                    <div class="option" data-value="balance">Having work-life balance - Time for family, hobbies, and personal growth</div>
+                    <div class="option" data-value="entrepreneur">Running my own business - Independence, creating opportunities for others</div>
+                    <div class="option" data-value="leadership">In a leadership position - Guiding others, influencing decisions, creating vision</div>
+                    <div class="option" data-value="creative">Expressing my creativity - Producing meaningful creative work, artistic fulfillment</div>
+                </div>
+            </div>
+            
+            <!-- Results -->
+            <div class="step" id="results">
+                <div class="result-container">
+                    <div class="result-header">
+                        <h2 class="result-title">Your Career Discovery Profile</h2>
+                        <p>Based on your comprehensive assessment, here are your personalized insights and career recommendations</p>
+                    </div>
+                    
+                    <div id="personality-insights">
+                        <!-- Personality insights will be dynamically inserted here -->
+                    </div>
+                    
+                    <div id="career-results">
+                        <!-- Career results will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="personality-insights" id="additional-insights">
+                        <!-- Additional insights will be dynamically inserted here -->
+                    </div>
+                    
+                    <button class="reset-btn" id="resetBtn"><i class="fas fa-redo"></i> Retake Assessment</button>
+                    
+                    <div class="sa-context" style="margin-top: 30px;">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h4>Next Steps for Your Career Journey</h4>
+                            <p>Consider discussing these results with a career counselor at a local university, college, or career center. Many South African institutions offer free career guidance services. You can also explore online resources like the Department of Higher Education and Training's career portal or schedule informational interviews with professionals in fields that interest you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button id="prevBtn"><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced career profiles database
+        const careerProfiles = {
+            "educationSocial": {
+                title: "Education & Social Development Specialist",
+                description: "Your profile shows strong empathy, communication skills, and a desire to make meaningful social impact. You thrive in collaborative environments and value relationships. Careers in education, counseling, community development, or social services would allow you to utilize your natural abilities to help others grow and communities to strengthen.",
+                details: [
+                    "Teacher/Lecturer (specializing in subjects matching your interests)",
+                    "Educational Psychologist or School Counselor",
+                    "Social Worker or Community Development Officer",
+                    "Training and Development Specialist in corporations or NGOs",
+                    "Youth Development Coordinator or Life Skills Coach",
+                    "Non-profit Program Manager focusing on education or social services"
+                ],
+                reasons: [
+                    "Your high empathy and communication scores indicate strong interpersonal abilities",
+                    "Your preference for collaborative work aligns with team-oriented social professions",
+                    "Your values around making a difference match social impact careers",
+                    "South Africa's need for educational and social development professionals creates opportunities"
+                ],
+                personality: "Helper/Communicator",
+                mbti: "ENFJ, ESFJ, INFJ, or ISFJ tendencies",
+                environments: "Schools, community centers, NGOs, counseling centers, training organizations"
+            },
+            "businessManagement": {
+                title: "Business & Organizational Leader",
+                description: "Your analytical mindset, organizational skills, and strategic thinking point toward business and management careers. You likely enjoy creating systems, solving complex problems, and driving results. Your leadership potential combined with practical orientation makes you well-suited for roles that require both vision and execution.",
+                details: [
+                    "Business Analyst or Management Consultant",
+                    "Project/Program Manager in various industries",
+                    "Human Resources Manager or Organizational Development Specialist",
+                    "Marketing Manager or Business Development Executive",
+                    "Entrepreneur or Small Business Owner",
+                    "Financial Analyst, Accountant, or Auditor"
+                ],
+                reasons: [
+                    "Your analytical and organizational strengths are highly valued in business",
+                    "Your decision-making style suggests good judgment in complex situations",
+                    "Your moderate risk tolerance allows for strategic business decisions",
+                    "South Africa's growing economy needs skilled business professionals"
+                ],
+                personality: "Organizer/Strategist",
+                mbti: "ESTJ, ENTJ, INTJ, or ISTJ tendencies",
+                environments: "Corporate offices, consulting firms, financial institutions, entrepreneurial ventures"
+            },
+            "healthcare": {
+                title: "Healthcare & Wellness Professional",
+                description: "Your combination of analytical thinking, empathy, and practical orientation suggests strong potential in healthcare fields. You likely balance scientific understanding with compassionate care. Healthcare professions allow you to make immediate, tangible differences in people's lives while engaging both your mind and heart.",
+                details: [
+                    "Nurse (various specializations) or Clinical Officer",
+                    "Medical Doctor (GP or specialist matching your interests)",
+                    "Physiotherapist, Occupational Therapist, or Speech Therapist",
+                    "Nutritionist, Dietitian, or Wellness Coach",
+                    "Mental Health Counselor, Psychologist, or Psychiatrist",
+                    "Public Health Specialist or Health Services Manager"
+                ],
+                reasons: [
+                    "Your empathy combined with analytical skills is ideal for healthcare",
+                    "Your stress response suggests resilience in high-pressure situations",
+                    "Your desire to contribute to South Africa's development aligns with healthcare needs",
+                    "Your learning preference matches the hands-on nature of healthcare training"
+                ],
+                personality: "Caregiver/Analyst",
+                mbti: "ISFJ, INFJ, ESTJ, or ENTJ tendencies",
+                environments: "Hospitals, clinics, private practices, community health centers, wellness facilities"
+            },
+            "creativeTech": {
+                title: "Creative & Digital Innovator",
+                description: "Your creative thinking combined with either technical aptitude or communication skills positions you well for careers blending creativity with technology or media. You likely enjoy innovation, visual thinking, and bringing ideas to life. The growing digital economy offers diverse opportunities for those who can bridge creative and technical domains.",
+                details: [
+                    "Graphic Designer, UX/UI Designer, or Digital Artist",
+                    "Content Creator, Social Media Manager, or Digital Marketer",
+                    "Web Developer, Front-End Developer, or Multimedia Programmer",
+                    "Technical Writer, Content Strategist, or Editor",
+                    "Video Producer, Animator, or Game Designer",
+                    "Architect, Interior Designer, or Industrial Designer"
+                ],
+                reasons: [
+                    "Your creative expression style matches innovation-focused careers",
+                    "Your comfort with technology/digital environments is a growing advantage",
+                    "Your learning style suggests adaptability in fast-changing fields",
+                    "South Africa's expanding digital economy creates diverse opportunities"
+                ],
+                personality: "Creator/Innovator",
+                mbti: "ENFP, INFP, ENTP, or INTP tendencies",
+                environments: "Creative agencies, tech companies, media houses, freelance/remote work, studios"
+            },
+            "engineeringTech": {
+                title: "Engineering & Technology Specialist",
+                description: "Your strong analytical skills, interest in mathematics/sciences, and practical problem-solving approach indicate excellent potential in engineering and technology fields. You likely enjoy understanding how things work, improving systems, and creating efficient solutions. These high-demand fields offer stability alongside opportunities for innovation.",
+                details: [
+                    "Engineer (Civil, Electrical, Mechanical, Chemical based on interests)",
+                    "Software Developer, Programmer, or Systems Analyst",
+                    "Data Analyst, Data Scientist, or Business Intelligence Specialist",
+                    "IT Specialist, Network Administrator, or Cybersecurity Analyst",
+                    "Renewable Energy Technician or Environmental Engineer",
+                    "Technical Project Manager or Engineering Consultant"
+                ],
+                reasons: [
+                    "Your analytical and logical thinking is essential in technical fields",
+                    "Your problem-solving approach aligns with engineering methodologies",
+                    "Your moderate to high tolerance for structured learning suits technical education",
+                    "South Africa's infrastructure and technology needs create strong demand"
+                ],
+                personality: "Analyst/Builder",
+                mbti: "ISTJ, INTJ, ESTP, or ENTJ tendencies",
+                environments: "Engineering firms, tech companies, manufacturing plants, research institutions"
+            },
+            "environmentalScience": {
+                title: "Environmental & Sustainability Professional",
+                description: "Your interest in nature, practical skills, and desire to contribute to environmental sustainability point toward careers in environmental science, agriculture, or conservation. You likely enjoy hands-on work, understand complex systems, and value protecting natural resources. These fields combine scientific knowledge with tangible impact on South Africa's unique environment.",
+                details: [
+                    "Environmental Scientist, Consultant, or Impact Assessor",
+                    "Agricultural Specialist, Farmer, or Agribusiness Manager",
+                    "Conservation Officer, Park Manager, or Wildlife Biologist",
+                    "Urban Planner, Sustainability Coordinator, or Green Building Consultant",
+                    "Geologist, Hydrologist, or Environmental Engineer",
+                    "Waste Management Specialist or Recycling Program Coordinator"
+                ],
+                reasons: [
+                    "Your practical orientation and outdoor interests align with environmental work",
+                    "Your systems thinking helps understand complex environmental relationships",
+                    "Your values around contributing to South Africa match environmental priorities",
+                    "Your learning preference suits the hands-on nature of environmental sciences"
+                ],
+                personality: "Practical/Protector",
+                mbti: "ISTP, ISFP, ESTP, or ESFP tendencies",
+                environments: "Field sites, conservation areas, agricultural operations, environmental agencies"
+            }
+        };
+
+        // User responses storage for 20 steps
+        const userResponses = {};
+        for (let i = 1; i <= 20; i++) {
+            userResponses[`step${i}`] = null;
+        }
+
+        // DOM elements
+        const steps = document.querySelectorAll('.step');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progress-bar');
+        const currentStepEl = document.getElementById('current-step');
+        const resetBtn = document.getElementById('resetBtn');
+        let currentStep = 1;
+        const totalSteps = 20;
+
+        // Initialize the assessment
+        function initAssessment() {
+            updateButtons();
+            updateProgressBar();
+            
+            // Add click event listeners to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    this.parentNode.querySelectorAll('.option').forEach(sibling => {
+                        sibling.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Store the response
+                    const stepId = this.closest('.step').id;
+                    const stepNumber = parseInt(stepId.replace('step', ''));
+                    userResponses[`step${stepNumber}`] = this.getAttribute('data-value');
+                    
+                    // Enable next button if it's disabled
+                    nextBtn.disabled = false;
+                });
+            });
+            
+            // Button event listeners
+            prevBtn.addEventListener('click', goToPreviousStep);
+            nextBtn.addEventListener('click', goToNextStep);
+            resetBtn.addEventListener('click', resetAssessment);
+        }
+
+        // Update button states
+        function updateButtons() {
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'flex';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.textContent = 'See Complete Results';
+                nextBtn.innerHTML = 'See Complete Results <i class="fas fa-arrow-right"></i>';
+            } else {
+                nextBtn.textContent = 'Next';
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+            }
+            
+            // Disable next button if no option selected in current step
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const hasSelected = currentStepEl.querySelector('.option.selected');
+            nextBtn.disabled = !hasSelected;
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = (currentStep / totalSteps) * 100;
+            progressBar.style.width = `${progress}%`;
+            currentStepEl.textContent = currentStep;
+        }
+
+        // Navigate to next step
+        function goToNextStep() {
+            // If we're on the last question step, go to results
+            if (currentStep === totalSteps) {
+                showResults();
+                return;
+            }
+            
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Show next step
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            updateButtons();
+            updateProgressBar();
+        }
+
+        // Navigate to previous step
+        function goToPreviousStep() {
+            // If on first step, go back to index/home page
+            if (currentStep === 1) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Show previous step
+            currentStep--;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            updateButtons();
+            updateProgressBar();
+        }
+
+        // Show results
+        function showResults() {
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // Show results
+            document.getElementById('results').classList.add('active');
+            
+            // Hide navigation buttons
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            
+            // Update progress bar to 100%
+            progressBar.style.width = '100%';
+            
+            // Determine career profile based on responses
+            const careerProfile = determineCareerProfile();
+            displayPersonalityInsights();
+            displayCareerResults(careerProfile);
+            displayAdditionalInsights();
+        }
+
+        // Determine career profile based on comprehensive responses
+        function determineCareerProfile() {
+            // Enhanced scoring system
+            const scores = {
+                "educationSocial": 0,
+                "businessManagement": 0,
+                "healthcare": 0,
+                "creativeTech": 0,
+                "engineeringTech": 0,
+                "environmentalScience": 0
+            };
+            
+            // Weight different questions differently
+            // Core interest questions (higher weight)
+            switch(userResponses.step1) {
+                case 'maths': scores.engineeringTech += 4; scores.healthcare += 2; break;
+                case 'languages': scores.educationSocial += 4; scores.businessManagement += 2; break;
+                case 'humanities': scores.educationSocial += 4; scores.environmentalScience += 1; break;
+                case 'business': scores.businessManagement += 4; scores.educationSocial += 1; break;
+                case 'arts': scores.creativeTech += 4; scores.educationSocial += 2; break;
+                case 'tech': scores.engineeringTech += 3; scores.creativeTech += 3; break;
+            }
+            
+            // Activities and skills (medium weight)
+            switch(userResponses.step2) {
+                case 'creative': scores.creativeTech += 3; break;
+                case 'analytical': scores.engineeringTech += 2; scores.businessManagement += 2; break;
+                case 'social': scores.educationSocial += 3; scores.healthcare += 3; break;
+                case 'practical': scores.engineeringTech += 2; scores.environmentalScience += 2; break;
+                case 'organized': scores.businessManagement += 3; break;
+                case 'outdoor': scores.environmentalScience += 3; break;
+            }
+            
+            switch(userResponses.step4) {
+                case 'communication': scores.educationSocial += 3; scores.businessManagement += 1; break;
+                case 'analytical': scores.engineeringTech += 3; scores.businessManagement += 2; break;
+                case 'creative': scores.creativeTech += 3; break;
+                case 'empathy': scores.healthcare += 3; scores.educationSocial += 2; break;
+                case 'practical': scores.engineeringTech += 2; scores.environmentalScience += 2; break;
+                case 'organizational': scores.businessManagement += 3; break;
+            }
+            
+            // Values and South African context (high weight)
+            switch(userResponses.step5) {
+                case 'security': scores.healthcare += 2; scores.engineeringTech += 2; scores.businessManagement += 1; break;
+                case 'income': scores.businessManagement += 3; scores.engineeringTech += 2; break;
+                case 'impact': scores.educationSocial += 3; scores.healthcare += 3; scores.environmentalScience += 2; break;
+                case 'balance': scores.creativeTech += 2; scores.educationSocial += 1; break;
+                case 'growth': scores.engineeringTech += 2; scores.businessManagement += 2; scores.creativeTech += 1; break;
+                case 'recognition': scores.businessManagement += 3; scores.healthcare += 1; break;
+            }
+            
+            switch(userResponses.step7) {
+                case 'education': scores.educationSocial += 4; break;
+                case 'health': scores.healthcare += 4; break;
+                case 'business': scores.businessManagement += 4; break;
+                case 'tech': scores.engineeringTech += 3; scores.creativeTech += 3; break;
+                case 'community': scores.educationSocial += 4; break;
+                case 'environment': scores.environmentalScience += 4; break;
+            }
+            
+            // Personality and work style (medium weight)
+            switch(userResponses.step8) {
+                case 'introvert': scores.engineeringTech += 1; scores.creativeTech += 1; break;
+                case 'extrovert': scores.educationSocial += 2; scores.businessManagement += 1; break;
+                case 'ambivert': scores.businessManagement += 1; scores.healthcare += 1; break;
+                case 'structured': scores.engineeringTech += 2; scores.businessManagement += 1; break;
+                case 'flexible': scores.creativeTech += 2; break;
+                case 'selective': scores.healthcare += 1; scores.educationSocial += 1; break;
+            }
+            
+            // Life vision (high weight)
+            switch(userResponses.step20) {
+                case 'impact': scores.educationSocial += 3; scores.healthcare += 3; scores.environmentalScience += 2; break;
+                case 'expertise': scores.engineeringTech += 3; scores.healthcare += 2; break;
+                case 'balance': scores.creativeTech += 2; scores.educationSocial += 1; break;
+                case 'entrepreneur': scores.businessManagement += 4; break;
+                case 'leadership': scores.businessManagement += 3; scores.educationSocial += 2; break;
+                case 'creative': scores.creativeTech += 4; break;
+            }
+            
+            // Find the highest scoring career profile
+            let maxScore = 0;
+            let selectedProfile = "educationSocial"; // default
+            
+            for (const profile in scores) {
+                if (scores[profile] > maxScore) {
+                    maxScore = scores[profile];
+                    selectedProfile = profile;
+                }
+            }
+            
+            // If there's a tie, consider additional factors
+            const tiedProfiles = [];
+            for (const profile in scores) {
+                if (scores[profile] === maxScore) {
+                    tiedProfiles.push(profile);
+                }
+            }
+            
+            if (tiedProfiles.length > 1) {
+                // Break tie by looking at educational pathway preference
+                if (userResponses.step19 === 'university') {
+                    if (tiedProfiles.includes('engineeringTech')) selectedProfile = 'engineeringTech';
+                    else if (tiedProfiles.includes('healthcare')) selectedProfile = 'healthcare';
+                    else if (tiedProfiles.includes('businessManagement')) selectedProfile = 'businessManagement';
+                } else if (userResponses.step19 === 'college' || userResponses.step19 === 'apprenticeship') {
+                    if (tiedProfiles.includes('engineeringTech')) selectedProfile = 'engineeringTech';
+                    else if (tiedProfiles.includes('environmentalScience')) selectedProfile = 'environmentalScience';
+                    else if (tiedProfiles.includes('creativeTech')) selectedProfile = 'creativeTech';
+                } else {
+                    // Default to first tied profile
+                    selectedProfile = tiedProfiles[0];
+                }
+            }
+            
+            return selectedProfile;
+        }
+
+        // Display personality insights
+        function displayPersonalityInsights() {
+            const insightsContainer = document.getElementById('personality-insights');
+            
+            // Analyze key personality dimensions from responses
+            let socialStyle = "Balanced";
+            if (userResponses.step8 === 'introvert') socialStyle = "Introverted/Reflective";
+            if (userResponses.step8 === 'extrovert') socialStyle = "Extroverted/Outgoing";
+            if (userResponses.step8 === 'ambivert') socialStyle = "Adaptive/Ambiverted";
+            
+            let decisionStyle = "Balanced";
+            if (userResponses.step9 === 'logical') decisionStyle = "Analytical/Logical";
+            if (userResponses.step9 === 'intuitive') decisionStyle = "Intuitive/Instinctive";
+            if (userResponses.step9 === 'consultative') decisionStyle = "Collaborative/Consultative";
+            
+            let workApproach = "Adaptable";
+            if (userResponses.step3 === 'structured') workApproach = "Structured/Systematic";
+            if (userResponses.step3 === 'dynamic') workApproach = "Dynamic/Adaptive";
+            if (userResponses.step3 === 'independent') workApproach = "Independent/Autonomous";
+            
+            let stressManagement = "Adaptive";
+            if (userResponses.step10 === 'organized') stressManagement = "Organized/Systematic";
+            if (userResponses.step10 === 'retreat') stressManagement = "Reflective/Withdrawn";
+            if (userResponses.step10 === 'action') stressManagement = "Action-Oriented/Proactive";
+            
+            insightsContainer.innerHTML = `
+                <div class="personality-insights">
+                    <h3><i class="fas fa-user-edit"></i> Your Personality & Work Style Insights</h3>
+                    <p>Based on your responses, here are key aspects of your work personality:</p>
+                    
+                    <div class="insight-grid">
+                        <div class="insight-item">
+                            <div class="insight-title"><i class="fas fa-users"></i> Social Style</div>
+                            <div>${socialStyle}</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title"><i class="fas fa-clipboard-check"></i> Decision Making</div>
+                            <div>${decisionStyle}</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title"><i class="fas fa-tasks"></i> Work Approach</div>
+                            <div>${workApproach}</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title"><i class="fas fa-wind"></i> Stress Management</div>
+                            <div>${stressManagement}</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title"><i class="fas fa-brain"></i> Learning Style</div>
+                            <div>${userResponses.step11 ? userResponses.step11.replace('-', '/').charAt(0).toUpperCase() + userResponses.step11.slice(1) : 'Varied'}</div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-title"><i class="fas fa-chart-line"></i> Risk Tolerance</div>
+                            <div>${userResponses.step14 ? userResponses.step14.charAt(0).toUpperCase() + userResponses.step14.slice(1) : 'Moderate'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display career results
+        function displayCareerResults(profileKey) {
+            const profile = careerProfiles[profileKey];
+            const resultsContainer = document.getElementById('career-results');
+            
+            let detailsHTML = '';
+            profile.details.forEach(detail => {
+                detailsHTML += `<div class="detail-item"><div class="detail-icon"><i class="fas fa-chevron-right"></i></div><div>${detail}</div></div>`;
+            });
+            
+            let reasonsHTML = '';
+            profile.reasons.forEach(reason => {
+                reasonsHTML += `<div class="detail-item"><div class="detail-icon"><i class="fas fa-check-circle"></i></div><div>${reason}</div></div>`;
+            });
+            
+            resultsContainer.innerHTML = `
+                <div class="career-result">
+                    <h3 class="career-title"><i class="fas fa-bullseye"></i> ${profile.title}</h3>
+                    <p class="career-description">${profile.description}</p>
+                    
+                    <div class="career-details">
+                        <h4><i class="fas fa-briefcase"></i> Recommended Career Paths:</h4>
+                        ${detailsHTML}
+                        
+                        <h4 style="margin-top: 30px;"><i class="fas fa-lightbulb"></i> Why This Alignment Makes Sense:</h4>
+                        ${reasonsHTML}
+                        
+                        <div style="margin-top: 30px;">
+                            <h4><i class="fas fa-building"></i> Typical Work Environments:</h4>
+                            <p>${profile.environments}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display additional insights
+        function displayAdditionalInsights() {
+            const insightsContainer = document.getElementById('additional-insights');
+            
+            // Determine potential MBTI type based on responses
+            let mbtiEstimate = "ENFJ"; // Default
+            const profile = determineCareerProfile();
+            if (careerProfiles[profile]) {
+                mbtiEstimate = careerProfiles[profile].mbti.split(',')[0];
+            }
+            
+            // Determine educational pathway recommendations
+            let educationPath = "University degree or TVET college program";
+            if (userResponses.step19 === 'university') educationPath = "University degree program";
+            if (userResponses.step19 === 'college') educationPath = "TVET/Technical College program";
+            if (userResponses.step19 === 'apprenticeship') educationPath = "Apprenticeship or learnership";
+            if (userResponses.step19 === 'online') educationPath = "Online/distance learning program";
+            if (userResponses.step19 === 'entrepreneurial') educationPath = "Entrepreneurial path with business training";
+            if (userResponses.step19 === 'combination') educationPath = "Combination of formal education and practical experience";
+            
+            insightsContainer.innerHTML = `
+                <h3><i class="fas fa-chart-bar"></i> Additional Insights & Recommendations</h3>
+                
+                <div class="insight-grid">
+                    <div class="insight-item">
+                        <div class="insight-title"><i class="fas fa-user-tie"></i> Personality Type Estimate</div>
+                        <div>Your responses suggest ${careerProfiles[determineCareerProfile()].personality} tendencies</div>
+                        <div class="mbti-result" style="margin-top: 10px; padding: 10px; font-size: 1rem;">Potential MBTI: ${careerProfiles[determineCareerProfile()].mbti}</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><i class="fas fa-graduation-cap"></i> Suggested Education Path</div>
+                        <div>${educationPath}</div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: #666;">Based on your preferred learning approach</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><i class="fas fa-comments"></i> Communication Strengths</div>
+                        <div>${userResponses.step15 ? userResponses.step15.charAt(0).toUpperCase() + userResponses.step15.slice(1) : 'Adaptive'} style</div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: #666;">Consider developing complementary styles</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-title"><i class="fas fa-chart-line"></i> Career Development Tip</div>
+                        <div>Start with ${userResponses.step14 === 'low' ? 'stable positions' : userResponses.step14 === 'high' ? 'exploratory roles' : 'balanced opportunities'} to match your risk profile</div>
+                        <div style="margin-top: 10px; font-size: 0.9rem; color: #666;">Your risk tolerance: ${userResponses.step14 ? userResponses.step14.charAt(0).toUpperCase() + userResponses.step14.slice(1) : 'Moderate'}</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 25px; padding: 15px; background-color: #f8faff; border-radius: 8px;">
+                    <h4><i class="fas fa-exclamation-circle"></i> Important Considerations</h4>
+                    <p>This assessment provides guidance based on your current self-perception. As you gain experience, your interests and strengths may evolve. Consider:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Shadowing professionals in fields that interest you</li>
+                        <li>Talking to career counselors at South African institutions</li>
+                        <li>Taking online courses to explore different areas</li>
+                        <li>Considering internship or volunteer opportunities</li>
+                        <li>Revisiting this assessment in 6-12 months as you learn more about yourself</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Reset assessment
+        function resetAssessment() {
+            // Reset user responses
+            for (const key in userResponses) {
+                userResponses[key] = null;
+            }
+            
+            // Reset UI
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            
+            // Show navigation buttons again
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'flex';
+            
+            // Reset step counter
+            currentStep = 1;
+            updateButtons();
+            updateProgressBar();
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Browser Compatibility Script
+        (function() {
+            // Feature detection and polyfills for older browsers
+            if (!Array.from) {
+                Array.from = function(arrayLike) {
+                    return Array.prototype.slice.call(arrayLike);
+                };
+            }
+            
+            // LocalStorage check
+            if (!window.localStorage) {
+                window.localStorage = {
+                    getItem: function() { return null; },
+                    setItem: function() {},
+                    removeItem: function() {},
+                    clear: function() {}
+                };
+            }
+            
+            // Console polyfill for older IE
+            if (!window.console) {
+                window.console = {
+                    log: function() {},
+                    error: function() {},
+                    warn: function() {}
+                };
+            }
+        })();
+
+        // Initialize the assessment when page loads
+        document.addEventListener('DOMContentLoaded', initAssessment);
+    </script>
+</body>
+</html>

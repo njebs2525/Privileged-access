@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark-To-Course</title>
+    
+    <!-- EMBEDDED CSS STYLING -->
+    <style>
+        /* General Body Styling (Colorful) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef4f9; /* Light blue/grey background */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        /* Mosaic Header Styling - UPDATED FOR LARGER 4x5 GRID */
+        .mosaic-header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            min-height: 500px; /* Increased height for larger squares */
+            height: auto;
+        }
+
+        .mosaic-container {
+             display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 equal columns */
+            grid-template-rows: repeat(4, minmax(0, 1fr));    /* 4 equal rows */
+            gap: 8px; /* Increased gap for better spacing */
+            width: 100%;
+            max-width: 1200px; /* Increased max width */
+            height: 500px; /* Fixed height for consistency */
+            margin: 0 auto;
+            position: relative;
+            /* REMOVED: transform: rotate(-1deg); */
+             aspect-ratio: 5 / 4; /* Maintain 5:4 aspect ratio */
+}
+
+        .mosaic-square {
+            background-size: contain; /* Changed to contain to show full images */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #f0f0f0; /* Fallback background color */
+            border-radius: 6px;
+            transition: transform 0.3s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            width: 100%;
+            height: 100%;
+            min-height: 100px; /* Minimum height */
+        }
+
+        .mosaic-square:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            z-index: 3;
+            max-width: 80%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(0, 86, 179, 0.1);
+        }
+
+        .header-content h1 {
+            color: #0056b3;
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header-content p {
+            color: #333;
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        /* Main Container Styling */
+        main {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Input Fields Styling */
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Subject Group Alignment */
+        .subject-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .subject-group select, .subject-group input {
+            flex: 1;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 14px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button#searchButton {
+            background-color: #ff5733;
+            width: 100%;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button#searchButton:hover {
+            background-color: #c73e1c;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        /* Subject Info Styling */
+        .subject-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #0056b3;
+        }
+        
+        .subject-info h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        
+        .important-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        /* Remove button for subjects */
+        .remove-subject {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .remove-subject:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .mosaic-container {
+                height: 450px;
+                max-width: 1000px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .mosaic-container {
+                height: 400px;
+                max-width: 800px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mosaic-container {
+                height: 350px;
+                max-width: 600px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .mosaic-container {
+                height: 300px;
+                max-width: 100%;
+                gap: 4px;
+            }
+            
+            .mosaic-header {
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="mosaic-header">
+        <div class="mosaic-container" id="mosaicGrid">
+            <!-- Mosaic squares will be generated by JavaScript -->
+        </div>
+        <div class="header-content">
+            <h1>Find Your University Courses</h1>
+            <p>Enter your Matric results to see where you qualify!</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="subject-info">
+                <h3>How to Enter Your Results</h3>
+                <p>1. Enter your APS score (required)</p>
+                <p>2. Additionally, enter your individual subject marks below using the dropdown menus</p>
+            </div>
+            
+            <label for="apsScore">Total APS Score:</label>
+            <input type="number" id="apsScore" min="0" max="42" placeholder="e.g., 30">
+            
+            <h2>Your Subjects & Marks</h2>
+            <div id="subjectsArea">
+                <!-- JavaScript will add subject dropdowns here -->
+            </div>
+            <button onclick="addSubjectDropdown()">Add Another Subject</button>
+            
+            <button id="searchButton">Search Qualifying Courses</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Mark-To-Course Project | Njabulo Mazibuko 2025. All rights reserved.</p>
+    </footer>
+
+    <!-- EMBEDDED JAVASCRIPT LOGIC -->
+    <script>
+        // List of all subjects from the document
+        const allSubjects = [
+            "ACCOUNTING", "AFRIKAANS FAL", "AFRIKAANS HL", "AFRIKAANS SAL",
+            "AGRICULTURAL MANAGEMENT PRACTICES", "AGRICULTURAL SCIENCES", "ARABIC",
+            "BUSINESS STUDIES", "CIVIL TECHNOLOGY", "COMPUTER APPLICATION TECHNOLOGY",
+            "CONSUMER STUDIES", "DANCE", "DRAMATIC ARTS", "ECONOMICS",
+            "ELECTRICAL TECHNOLOGY", "ENGINEERING GRAPHICS AND DESIGN", "ENGLISH FAL",
+            "ENGLISH HL", "ENGLISH SAL", "Equine Studies", "FRENCH", "GEOGRAPHY",
+            "GERMAIN HL", "GUJARATI", "HEBREW SAL", "HINDI", "HISTORY",
+            "HOSPITALITY STUDIES", "INFORMATION TECHNOLOGY", "ISINDEBELE",
+            "ISIXHOSA", "ISIZULU FAL", "ISIZULU HL", "ITALIAN", "LATIN SAL",
+            "LIFE ORIENTATION", "LIFE SCIENCES", "MANDARIN", "MARINE SCIENCES",
+            "MARITIME ECONOMICS", "MATHEMATICS", "MATHEMATICS LITERACY",
+            "MECHANICAL TECHNOLOGY", "MODERN GREEK", "MUSIC", "NAUTICAL SCIENCE",
+            "PHYSICAL SCIENCES", "PORTIGUESE FAL", "PORTIGUESE HL", "PORTIGUESE SAL",
+            "RELIGION STUDIES", "SEPEDI", "SERBIAN", "SESOTHO", "SETSWANA",
+            "SISWATI", "SOUTH AFRICAN SIGN LANGUAGE", "SPANISH SAL",
+            "SPORT AND EXERCISE SCIENCE", "TAMIL", "TELEGU", "TECHNICAL MATHEMATICS",
+            "TECHNICAL SCIENCES", "TSHIVENDA FAL", "TSHIVENDA HL", "TSHIVENDA SAL", "Tourism",
+            "URDU FAL", "URDU HL", "URDU SAL", "VISUAL ARTS", "XITSONGA"
+        ];
+
+
+        const mosaicImages = [
+            "DUT.JPG",
+            "CUT.JPG",
+            "CPUT.PNG",
+            "WITS.PNG",
+            "UJ.PNG",
+            "UP.JPG",
+            "UWC.PNG",
+            "WSU.JPG",
+            "VUT.JPG",
+            "TUT.PNG",
+            "SU.WEBP",
+            "SPU.PNG",
+            "SMHU.JPG",
+            "NWU.WEBP",
+            "NMU.WEBP",
+            "UMP.PNG",
+            "MUT.PNG",
+            "UKZN.JPG",
+            "UFS.PNG",
+            "UZL.WEBP",
+            "VUT.JPG",
+            "UL.PNG"
+        ];
+
+        // Function to create mosaic grid - UPDATED FOR 4x5
+        function createMosaicGrid() {
+            const mosaicGrid = document.getElementById('mosaicGrid');
+            const totalSquares = 20; // 4 rows x 5 columns = 20 squares
+            
+            // Clear any existing squares
+            mosaicGrid.innerHTML = '';
+            
+            // Create 20 mosaic squares (4x5 grid)
+            for (let i = 0; i < totalSquares; i++) {
+                const square = document.createElement('div');
+                square.className = 'mosaic-square';
+                square.id = `mosaic-square-${i}`;
+                
+                // Set a static image for each square
+                const imageIndex = i % mosaicImages.length;
+                const imageUrl = mosaicImages[imageIndex];
+                
+                // Create image element for better loading control
+                const img = new Image();
+                img.src = imageUrl;
+                img.onload = function() {
+                    square.style.backgroundImage = `url(${imageUrl})`;
+                };
+                img.onerror = function() {
+                    console.warn(`Failed to load image: ${imageUrl}`);
+                    square.style.backgroundColor = `hsl(${i * 15}, 70%, 85%)`;
+                    square.style.display = 'flex';
+                    square.style.alignItems = 'center';
+                    square.style.justifyContent = 'center';
+                    
+                    // Add text placeholder if image fails to load
+                    const placeholderText = document.createElement('span');
+                    placeholderText.textContent = `Uni ${i + 1}`;
+                    placeholderText.style.color = '#666';
+                    placeholderText.style.fontSize = '14px';
+                    placeholderText.style.fontWeight = 'bold';
+                    square.appendChild(placeholderText);
+                };
+                
+                // Set initial background image
+                square.style.backgroundImage = `url(${imageUrl})`;
+                
+                mosaicGrid.appendChild(square);
+            }
+        }
+
+        // Initialize mosaic grid when page loads
+        document.addEventListener('DOMContentLoaded', (event) => {
+            createMosaicGrid();
+            
+            // Add default subjects
+            addSubjectDropdown("ENGLISH", "");
+            addSubjectDropdown("MATHEMATICS", "");
+            addSubjectDropdown("PHYSICAL SCIENCES", "");
+        });
+
+        // Keep track of selected subjects to avoid duplicates
+        let selectedSubjects = new Set();
+
+        // Function to dynamically add new subject dropdown fields
+        function addSubjectDropdown(subjectName = "", mark = "") {
+            const subjectsArea = document.getElementById('subjectsArea');
+            
+            const subjectGroup = document.createElement('div');
+            subjectGroup.classList.add('subject-group');
+            
+            // Create select element
+            const select = document.createElement('select');
+            select.classList.add('subjectSelect');
+            
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "-- Select a Subject --";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            select.appendChild(defaultOption);
+            
+            // Add all subjects as options
+            allSubjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                
+                // If this subject is already selected (except current one), disable it
+                if (selectedSubjects.has(subject) && subject !== subjectName) {
+                    option.disabled = true;
+                    option.textContent += " (already selected)";
+                }
+                
+                // Select the current subject if provided
+                if (subject === subjectName) {
+                    option.selected = true;
+                }
+                
+                select.appendChild(option);
+            });
+            
+            // Create mark input
+            const markInput = document.createElement('input');
+            markInput.type = "number";
+            markInput.min = "0";
+            markInput.max = "100";
+            markInput.placeholder = "Mark % (e.g., 65)";
+            markInput.classList.add('subjectMark');
+            if (mark) {
+                markInput.value = mark;
+            }
+            
+            // Create remove button
+            const removeButton = document.createElement('button');
+            removeButton.type = "button";
+            removeButton.classList.add('remove-subject');
+            removeButton.textContent = "×";
+            removeButton.title = "Remove this subject";
+            removeButton.onclick = function() {
+                // Remove subject from selected set
+                const selectedValue = select.value;
+                if (selectedValue) {
+                    selectedSubjects.delete(selectedValue);
+                }
+                subjectsArea.removeChild(subjectGroup);
+                updateAllDropdowns(); // Update other dropdowns to enable previously disabled options
+            };
+            
+            // Add change event to update selected subjects
+            select.addEventListener('change', function() {
+                const oldValue = subjectName;
+                const newValue = this.value;
+                
+                // Remove old value from set if it exists
+                if (oldValue) {
+                    selectedSubjects.delete(oldValue);
+                }
+                
+                // Add new value to set if not empty
+                if (newValue) {
+                    selectedSubjects.add(newValue);
+                }
+                
+                // Update subject name for this group
+                subjectName = newValue;
+                
+                // Update all dropdowns to reflect changes
+                updateAllDropdowns();
+            });
+            
+            // If a subject was provided, add it to selected set
+            if (subjectName) {
+                selectedSubjects.add(subjectName);
+            }
+            
+            subjectGroup.appendChild(select);
+            subjectGroup.appendChild(markInput);
+            subjectGroup.appendChild(removeButton);
+            
+            subjectsArea.appendChild(subjectGroup);
+        }
+
+        // Function to update all dropdowns to reflect current selections
+        function updateAllDropdowns() {
+            const allSelects = document.querySelectorAll('.subjectSelect');
+            allSelects.forEach(select => {
+                const currentValue = select.value;
+                Array.from(select.options).forEach(option => {
+                    if (option.value && option.value !== currentValue) {
+                        // Enable or disable based on selection
+                        option.disabled = selectedSubjects.has(option.value);
+                        // Update display text
+                        if (selectedSubjects.has(option.value)) {
+                            option.textContent = option.value + " (already selected)";
+                        } else {
+                            option.textContent = option.value;
+                        }
+                    }
+                });
+            });
+        }
+
+        // The main search logic
+        document.getElementById('searchButton').addEventListener('click', function() {
+            // Collect user data
+            const apsScore = document.getElementById('apsScore').value;
+            
+            // Collect subject data
+            const subjectGroups = document.querySelectorAll('.subject-group');
+            const userSubjects = [];
+            let hasErrors = false;
+            
+            subjectGroups.forEach(group => {
+                const select = group.querySelector('.subjectSelect');
+                const markInput = group.querySelector('.subjectMark');
+                
+                if (select && select.value && markInput && markInput.value) {
+                    const mark = parseInt(markInput.value);
+                    if (mark >= 0 && mark <= 100) {
+                        userSubjects.push({
+                            name: select.value,
+                            mark: mark
+                        });
+                    } else {
+                        alert(`Please enter a valid mark (0-100) for ${select.value}`);
+                        hasErrors = true;
+                    }
+                } else if (select && select.value && (!markInput || !markInput.value)) {
+                    alert(`Please enter a mark for ${select.value}`);
+                    hasErrors = true;
+                } else if ((!select || !select.value) && markInput && markInput.value) {
+                    alert(`Please select a subject for the mark entered`);
+                    hasErrors = true;
+                }
+            });
+            
+            // If there are errors, stop execution
+            if (hasErrors) {
+                return;
+            }
+            
+            // Require APS score
+            if (!apsScore) {
+                alert("Please enter your APS score to proceed.");
+                return;
+            }
+            
+            // Store data for results page
+            const userData = {
+                apsScore: apsScore ? parseInt(apsScore) : null,
+                subjects: userSubjects
+            };
+            
+            // Store in localStorage for results page
+            localStorage.setItem('matricUserData', JSON.stringify(userData));
+            
+            // Navigate to results page
+            window.location.href = 'results.html';
+        });
+    </script>
+
+</body>
+</html>

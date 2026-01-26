@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Force landscape orientation on mobile devices -->
+    <meta name="screen-orientation" content="landscape">
+    <meta name="full-screen" content="yes">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.jpg">
+    <title>Mark-To-Course</title>
+    
+    <!-- EMBEDDED CSS STYLING -->
+    <style>
+        /* Force landscape on mobile */
+        @media screen and (max-width: 768px) and (orientation: portrait) {
+            html {
+                transform: rotate(90deg);
+                transform-origin: left top;
+                width: 100vh;
+                height: 100vw;
+                overflow-x: hidden;
+                position: absolute;
+                top: 100%;
+                left: 0;
+            }
+            
+            body {
+                width: 100vh;
+                height: 100vw;
+            }
+        }
+
+        /* General Body Styling (Colorful) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef4f9; /* Light blue/grey background */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: -webkit-linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: -moz-linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: -ms-linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: -o-linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Mosaic Header Styling - UPDATED FOR LARGER 4x5 GRID */
+        .mosaic-header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            min-height: 500px; /* Increased height for larger squares */
+            height: auto;
+        }
+
+        .mosaic-container {
+             display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 equal columns */
+            grid-template-rows: repeat(4, minmax(0, 1fr));    /* 4 equal rows */
+            gap: 8px; /* Increased gap for better spacing */
+            width: 100%;
+            max-width: 1200px; /* Increased max width */
+            height: 500px; /* Fixed height for consistency */
+            margin: 0 auto;
+            position: relative;
+            /* REMOVED: transform: rotate(-1deg); */
+            -webkit-aspect-ratio: 5 / 4;
+            -moz-aspect-ratio: 5 / 4;
+            aspect-ratio: 5 / 4; /* Maintain 5:4 aspect ratio */
+}
+
+        .mosaic-square {
+            background-size: contain; /* Changed to contain to show full images */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #f0f0f0; /* Fallback background color */
+            border-radius: 6px;
+            -webkit-transition: -webkit-transform 0.3s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            -moz-transition: -moz-transform 0.3s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            -webkit-animation: fadeIn 0.8s forwards;
+            -moz-animation: fadeIn 0.8s forwards;
+            animation: fadeIn 0.8s forwards;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            width: 100%;
+            height: 100%;
+            min-height: 100px; /* Minimum height */
+        }
+
+        .mosaic-square:hover {
+            -webkit-transform: scale(1.08);
+            -moz-transform: scale(1.08);
+            -ms-transform: scale(1.08);
+            transform: scale(1.08);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        @-webkit-keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @-moz-keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            z-index: 3;
+            max-width: 80%;
+            text-align: center;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(0, 86, 179, 0.1);
+        }
+
+        .header-content h1 {
+            color: #0056b3;
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header-content p {
+            color: #333;
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        /* Main Container Styling */
+        main {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Input Fields Styling */
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Subject Group Alignment */
+        .subject-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .subject-group select, .subject-group input {
+            flex: 1;
+        }
+
+        /* APS Display Styling */
+        .aps-display {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #0056b3;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            color: #0056b3;
+        }
+
+        /* APS Score Display */
+        #calculatedAPS {
+            font-size: 24px;
+            color: #28a745;
+            display: inline-block;
+            padding: 5px 15px;
+            background: white;
+            border-radius: 4px;
+            margin-left: 10px;
+            border: 2px solid #28a745;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 14px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button#searchButton {
+            background-color: #0056b3;
+            width: 100%;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button#searchButton:hover {
+            background-color: #003d82;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        /* Subject Info Styling */
+        .subject-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #0056b3;
+        }
+        
+        .subject-info h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        
+        .important-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        /* Remove button for subjects */
+        .remove-subject {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .remove-subject:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .mosaic-container {
+                height: 450px;
+                max-width: 1000px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .mosaic-container {
+                height: 400px;
+                max-width: 800px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mosaic-container {
+                height: 350px;
+                max-width: 600px;
+            }
+            
+            /* Adjust landscape mode for tablets */
+            html {
+                transform: none !important;
+                width: 100% !important;
+                height: auto !important;
+                position: static !important;
+                top: auto !important;
+                left: auto !important;
+            }
+            
+            body {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .mosaic-container {
+                height: 300px;
+                max-width: 100%;
+                gap: 4px;
+            }
+            
+            .mosaic-header {
+                min-height: 350px;
+            }
+            
+            .subject-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .subject-group select, .subject-group input, .subject-group button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="mosaic-header">
+        <div class="mosaic-container" id="mosaicGrid">
+            <!-- Mosaic squares will be generated by JavaScript -->
+        </div>
+        <div class="header-content">
+            <h1>Find Your University Courses</h1>
+            <p>Enter your Matric marks to calculate APS and see where you qualify!</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="subject-info">
+                <h3>How to Use This Tool</h3>
+                <p>1. Select your subjects from the dropdown menus</p>
+                <p>2. Enter your marks (0-100) for each subject</p>
+                <p>3. Your APS score will be calculated automatically below</p>
+                <p class="important-note">
+                    <strong>Important:</strong> Life Orientation follows special rules: 
+                    0-79% = 0 points, 80-100% = 1 point. Other subjects use the standard APS scale.
+                </p>
+            </div>
+            
+            <div class="aps-display">
+                <strong>Calculated APS Score:</strong>
+                <span id="calculatedAPS">0</span>
+                <p style="font-size: 14px; margin-top: 5px; color: #666;">
+                    (Auto-calculated based on your marks below)
+                </p>
+            </div>
+            
+            <h2>Your Subjects & Marks</h2>
+            <div id="subjectsArea">
+                <!-- JavaScript will add subject dropdowns here -->
+            </div>
+            <button onclick="addSubjectDropdown()">Add Another Subject</button>
+            
+            <button id="searchButton">Search Qualifying Courses</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Mark-To-Course Project | Njabulo Mazibuko 2025. All rights reserved.</p>
+    </footer>
+
+    <!-- EMBEDDED JAVASCRIPT LOGIC -->
+    <script>
+        // List of all subjects from the document
+        const allSubjects = [
+            "ACCOUNTING", "AFRIKAANS FAL", "AFRIKAANS HL", "AFRIKAANS SAL",
+            "AGRICULTURAL MANAGEMENT PRACTICES", "AGRICULTURAL SCIENCES", "ARABIC",
+            "BUSINESS STUDIES", "CIVIL TECHNOLOGY", "COMPUTER APPLICATION TECHNOLOGY",
+            "CONSUMER STUDIES", "DANCE", "DRAMATIC ARTS", "ECONOMICS",
+            "ELECTRICAL TECHNOLOGY", "ENGINEERING GRAPHICS AND DESIGN", "ENGLISH FAL",
+            "ENGLISH HL", "ENGLISH SAL", "Equine Studies", "FRENCH", "GEOGRAPHY",
+            "GERMAIN HL", "GUJARATI", "HEBREW SAL", "HINDI", "HISTORY",
+            "HOSPITALITY STUDIES", "INFORMATION TECHNOLOGY", "ISINDEBELE",
+            "ISIXHOSA", "ISIZULU FAL", "ISIZULU HL", "ITALIAN", "LATIN SAL",
+            "LIFE ORIENTATION", "LIFE SCIENCES", "MANDARIN", "MARINE SCIENCES",
+            "MARITIME ECONOMICS", "MATHEMATICS", "MATHEMATICS LITERACY",
+            "MECHANICAL TECHNOLOGY", "MODERN GREEK", "MUSIC", "NAUTICAL SCIENCE",
+            "PHYSICAL SCIENCES", "PORTIGUESE FAL", "PORTIGUESE HL", "PORTIGUESE SAL",
+            "RELIGION STUDIES", "SEPEDI", "SERBIAN", "SESOTHO", "SETSWANA",
+            "SISWATI", "SOUTH AFRICAN SIGN LANGUAGE", "SPANISH SAL",
+            "SPORT AND EXERCISE SCIENCE", "TAMIL", "TELEGU", "TECHNICAL MATHEMATICS",
+            "TECHNICAL SCIENCES", "TSHIVENDA FAL", "TSHIVENDA HL", "TSHIVENDA SAL", "Tourism",
+            "URDU FAL", "URDU HL", "URDU SAL", "VISUAL ARTS", "XITSONGA"
+        ];
+
+        const mosaicImages = [
+            "DUT.jpg",
+            "CUT.jpg",
+            "CPUT.png",
+            "wits2.jpg",
+            "uj2.webp",
+            "UP.jpg",
+            "UWC.png",
+            "WSU.jpg",
+            "VUT.jpg",
+            "TUT.png",
+            "SU.webp",
+            "SPU.png",
+            "SMHU.jpg",
+            "NWU.webp",
+            "NMU.webp",
+            "UMP.png",
+            "MUT.png",
+            "UKZN.jpg",
+            "UFS.png",
+            "UZL.webp",
+            "VUT.jpg",
+            "UL.png"
+        ];
+
+        // Function to create mosaic grid
+        function createMosaicGrid() {
+            const mosaicGrid = document.getElementById('mosaicGrid');
+            const totalSquares = 20;
+            
+            mosaicGrid.innerHTML = '';
+            
+            for (let i = 0; i < totalSquares; i++) {
+                const square = document.createElement('div');
+                square.className = 'mosaic-square';
+                square.id = `mosaic-square-${i}`;
+                
+                const imageIndex = i % mosaicImages.length;
+                const imageUrl = mosaicImages[imageIndex];
+                
+                const img = new Image();
+                img.src = imageUrl;
+                img.onload = function() {
+                    square.style.backgroundImage = `url(${imageUrl})`;
+                };
+                img.onerror = function() {
+                    console.warn(`Failed to load image: ${imageUrl}`);
+                    square.style.backgroundColor = `hsl(${i * 15}, 70%, 85%)`;
+                    square.style.display = 'flex';
+                    square.style.alignItems = 'center';
+                    square.style.justifyContent = 'center';
+                    
+                    const placeholderText = document.createElement('span');
+                    placeholderText.textContent = `Uni ${i + 1}`;
+                    placeholderText.style.color = '#666';
+                    placeholderText.style.fontSize = '14px';
+                    placeholderText.style.fontWeight = 'bold';
+                    square.appendChild(placeholderText);
+                };
+                
+                square.style.backgroundImage = `url(${imageUrl})`;
+                mosaicGrid.appendChild(square);
+            }
+        }
+
+        // APS Calculation Logic
+        function calculateAPSPoints(mark, subjectName) {
+            // Special rule for Life Orientation
+            if (subjectName === "LIFE ORIENTATION") {
+                if (mark >= 80 && mark <= 100) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            
+            // Standard APS scale for other subjects
+            if (mark >= 80 && mark <= 100) return 7;  // A
+            if (mark >= 70 && mark <= 79) return 6;   // B
+            if (mark >= 60 && mark <= 69) return 5;   // C
+            if (mark >= 50 && mark <= 59) return 4;   // D
+            if (mark >= 40 && mark <= 49) return 3;   // E
+            if (mark >= 30 && mark <= 39) return 2;   // F
+            if (mark >= 0 && mark <= 29) return 1;    // G
+            
+            return 0;
+        }
+
+        // Function to update APS display
+        function updateAPSCalculation() {
+            const subjectGroups = document.querySelectorAll('.subject-group');
+            let totalAPS = 0;
+            
+            subjectGroups.forEach(group => {
+                const select = group.querySelector('.subjectSelect');
+                const markInput = group.querySelector('.subjectMark');
+                
+                if (select && select.value && markInput && markInput.value) {
+                    const mark = parseInt(markInput.value);
+                    const subjectName = select.value;
+                    
+                    if (!isNaN(mark) && mark >= 0 && mark <= 100) {
+                        totalAPS += calculateAPSPoints(mark, subjectName);
+                    }
+                }
+            });
+            
+            // Update the APS display
+            document.getElementById('calculatedAPS').textContent = totalAPS;
+            
+            return totalAPS;
+        }
+
+        // Initialize mosaic grid when page loads
+        document.addEventListener('DOMContentLoaded', (event) => {
+            createMosaicGrid();
+            
+            // Add default subjects
+            addSubjectDropdown("ENGLISH HL", "");
+            addSubjectDropdown("MATHEMATICS", "");
+            addSubjectDropdown("PHYSICAL SCIENCES", "");
+            addSubjectDropdown("LIFE ORIENTATION", "");
+            addSubjectDropdown("LIFE SCIENCES", "");
+            addSubjectDropdown("ISIZULU FAL", "");
+            addSubjectDropdown("ACCOUNTING", "");
+            
+            // Update APS calculation initially
+            updateAPSCalculation();
+        });
+
+        // Keep track of selected subjects to avoid duplicates
+        let selectedSubjects = new Set();
+
+        // Function to dynamically add new subject dropdown fields
+        function addSubjectDropdown(subjectName = "", mark = "") {
+            const subjectsArea = document.getElementById('subjectsArea');
+            
+            const subjectGroup = document.createElement('div');
+            subjectGroup.classList.add('subject-group');
+            
+            // Create select element
+            const select = document.createElement('select');
+            select.classList.add('subjectSelect');
+            
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "-- Select a Subject --";
+            defaultOption.disabled = true;
+            select.appendChild(defaultOption);
+            
+            // Add all subjects as options
+            allSubjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                
+                // If this subject is already selected (except current one), disable it
+                if (selectedSubjects.has(subject) && subject !== subjectName) {
+                    option.disabled = true;
+                    option.textContent += " (already selected)";
+                }
+                
+                // Select the current subject if provided
+                if (subject === subjectName) {
+                    option.selected = true;
+                }
+                
+                select.appendChild(option);
+            });
+            
+            // Select default option if no subject name provided
+            if (!subjectName) {
+                defaultOption.selected = true;
+            }
+            
+            // Create mark input
+            const markInput = document.createElement('input');
+            markInput.type = "number";
+            markInput.min = "0";
+            markInput.max = "100";
+            markInput.placeholder = "Mark % (0-100)";
+            markInput.classList.add('subjectMark');
+            if (mark) {
+                markInput.value = mark;
+            }
+            
+            // Add input event listener to update APS calculation
+            markInput.addEventListener('input', updateAPSCalculation);
+            
+            // Create remove button
+            const removeButton = document.createElement('button');
+            removeButton.type = "button";
+            removeButton.classList.add('remove-subject');
+            removeButton.textContent = "×";
+            removeButton.title = "Remove this subject";
+            removeButton.onclick = function() {
+                // Remove subject from selected set
+                const selectedValue = select.value;
+                if (selectedValue) {
+                    selectedSubjects.delete(selectedValue);
+                }
+                subjectsArea.removeChild(subjectGroup);
+                updateAllDropdowns(); // Update other dropdowns
+                updateAPSCalculation(); // Recalculate APS
+            };
+            
+            // Add change event to update selected subjects
+            select.addEventListener('change', function() {
+                const oldValue = subjectName;
+                const newValue = this.value;
+                
+                // Remove old value from set if it exists
+                if (oldValue) {
+                    selectedSubjects.delete(oldValue);
+                }
+                
+                // Add new value to set if not empty
+                if (newValue) {
+                    selectedSubjects.add(newValue);
+                }
+                
+                // Update subject name for this group
+                subjectName = newValue;
+                
+                // Update all dropdowns to reflect changes
+                updateAllDropdowns();
+                
+                // Recalculate APS
+                updateAPSCalculation();
+            });
+            
+            // If a subject was provided, add it to selected set
+            if (subjectName) {
+                selectedSubjects.add(subjectName);
+            }
+            
+            subjectGroup.appendChild(select);
+            subjectGroup.appendChild(markInput);
+            subjectGroup.appendChild(removeButton);
+            
+            subjectsArea.appendChild(subjectGroup);
+            
+            // Add input event to mark input for APS calculation
+            markInput.addEventListener('input', updateAPSCalculation);
+        }
+
+        // Function to update all dropdowns to reflect current selections
+        function updateAllDropdowns() {
+            const allSelects = document.querySelectorAll('.subjectSelect');
+            allSelects.forEach(select => {
+                const currentValue = select.value;
+                Array.from(select.options).forEach(option => {
+                    if (option.value && option.value !== currentValue) {
+                        // Enable or disable based on selection
+                        option.disabled = selectedSubjects.has(option.value);
+                        // Update display text
+                        if (selectedSubjects.has(option.value)) {
+                            option.textContent = option.value + " (already selected)";
+                        } else {
+                            option.textContent = option.value;
+                        }
+                    }
+                });
+            });
+        }
+
+        // The main search logic
+        document.getElementById('searchButton').addEventListener('click', function() {
+            // Collect subject data
+            const subjectGroups = document.querySelectorAll('.subject-group');
+            const userSubjects = [];
+            let hasErrors = false;
+            
+            subjectGroups.forEach(group => {
+                const select = group.querySelector('.subjectSelect');
+                const markInput = group.querySelector('.subjectMark');
+                
+                if (select && select.value && markInput && markInput.value) {
+                    const mark = parseInt(markInput.value);
+                    if (mark >= 0 && mark <= 100) {
+                        userSubjects.push({
+                            name: select.value,
+                            mark: mark
+                        });
+                    } else {
+                        alert(`Please enter a valid mark (0-100) for ${select.value}`);
+                        hasErrors = true;
+                    }
+                } else if (select && select.value && (!markInput || !markInput.value)) {
+                    alert(`Please enter a mark for ${select.value}`);
+                    hasErrors = true;
+                } else if ((!select || !select.value) && markInput && markInput.value) {
+                    alert(`Please select a subject for the mark entered`);
+                    hasErrors = true;
+                }
+            });
+            
+            // If there are errors, stop execution
+            if (hasErrors) {
+                return;
+            }
+            
+            // Check if at least one subject is entered
+            if (userSubjects.length === 0) {
+                alert("Please enter at least one subject with marks to proceed.");
+                return;
+            }
+            
+            // Calculate APS
+            const calculatedAPS = updateAPSCalculation();
+            
+            // Store data for results page
+            const userData = {
+                apsScore: calculatedAPS,
+                subjects: userSubjects
+            };
+            
+            // Store in localStorage for results page
+            localStorage.setItem('matricUserData', JSON.stringify(userData));
+            
+            // Navigate to results page
+            window.location.href = 'results.html';
+        });
+
+        // Browser Compatibility Script
+        (function() {
+            // Feature detection and polyfills for older browsers
+            if (!Array.from) {
+                Array.from = function(arrayLike) {
+                    return Array.prototype.slice.call(arrayLike);
+                };
+            }
+            
+            // LocalStorage check
+            if (!window.localStorage) {
+                window.localStorage = {
+                    getItem: function() { return null; },
+                    setItem: function() {},
+                    removeItem: function() {},
+                    clear: function() {}
+                };
+            }
+            
+            // Console polyfill for older IE
+            if (!window.console) {
+                window.console = {
+                    log: function() {},
+                    error: function() {},
+                    warn: function() {}
+                };
+            }
+        })();
+    </script>
+
+</body>
+</html>
